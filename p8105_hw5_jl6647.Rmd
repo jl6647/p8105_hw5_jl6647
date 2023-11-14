@@ -141,12 +141,19 @@ pivot_longer =
                names_prefix = "week_",
                values_to = "value") |> 
   mutate(week = as.integer(week))
-plot =
-  pivot_longer |> 
-  group_by(filename_wo_csv) |> 
-  ggplot(aes(x = week, y = value, color = interaction(arm, subject_id))) +
-    geom_line()
-plot
+pivot_longer|>
+  group_by(filename_wo_csv)|>
+  ggplot(
+    aes(x=week,y=value,color=filename_wo_csv)
+  )+
+  geom_line()+
+  facet_wrap(~arm)+
+  labs(
+    title = "Observations Over Time by Subject",
+    x = "Week",
+    y = "Value of Observation",
+    color = "subject"
+  )
 ```
 
 From this plot, we can find that the observation for all patients in experimental arm are increasing over eight weeks,but there appears to be a noticeable difference between the experimental and control groups, with the experimental group showing a more positive trend over time compared to the control group. The observation for all patients in experimental arm are increasing over eight weeks.
